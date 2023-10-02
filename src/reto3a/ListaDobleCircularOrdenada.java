@@ -1,4 +1,4 @@
-package reto3a.appListaDobleCircularOrdenada;
+package reto3a;
 
 import java.security.InvalidParameterException;
 

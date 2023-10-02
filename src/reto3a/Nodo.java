@@ -1,4 +1,4 @@
-package reto3a.appListaDobleCircularOrdenada;
+package reto3a;
 
 public class Nodo <T extends Comparable<T>> {
 	private T contenido;
