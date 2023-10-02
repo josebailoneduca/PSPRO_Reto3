@@ -19,8 +19,19 @@ package reto3b;
 public class Reto3BMain {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		//CPU  a usar
+		CPU cpu = new CPU();
+		//Dispatcher
+		Dispatcher dispatcher = new Dispatcher();
+		//Scheduler
+		Scheduler scheduler = new Scheduler(dispatcher, cpu);
+		//generacion de los procesos iniciales
+		for (int i = 0; i < 500; i++) {
+			dispatcher.generarProceso(scheduler);
+		}
+		//Iniciar el funcionamiento del scheduler
+		scheduler.iniciar();
+		
 	}
 
 }

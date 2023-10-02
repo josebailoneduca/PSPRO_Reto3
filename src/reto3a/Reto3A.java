@@ -8,8 +8,8 @@ package reto3a;
  * 
  * RETO 3 A:
  * 
- * Crear una lista doblemente enlazada circular ordenada que implemente la busqueda de un elemento usando 2 hilos que busquen 
- * cada uno dese el inicio y desde el final respectivamente
+ * Crear una lista doblemente enlazada circular ordenada que implemente la busqueda de un elemento usando 2 hebras que busquen 
+ * cada una dese el inicio y desde el final de la lista respectivamente
  */
 public class Reto3A {
 
