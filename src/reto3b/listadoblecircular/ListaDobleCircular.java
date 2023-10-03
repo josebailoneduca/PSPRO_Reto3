@@ -138,6 +138,7 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 			//actualizar cabecera first si es necesario
 			if (anterior.equals(cabecera.getTail()))
 				cabecera.setFirst(nuevo);		
+			this.cantidad++;
 		}
 	}
 

@@ -22,16 +22,22 @@ public class Scheduler {
 	 */
 	public void addProceso(Proceso proceso) {
 		this.listaProcesos.addBeforeCurrent(proceso);
-		System.out.println("Agregado: "+proceso);
+		System.out.println("Agregado: "+proceso+ " TOTAL:"+this.listaProcesos.size());
 	}
  
 
 	public void iniciar() {
-		listaProcesos.getLast();
 		//mientras haya procesos
 		while(this.listaProcesos.size()>0) {
-			//ejecutar proceso
+			
+			//recoger siguiente
 			Proceso procesoAEjecutar=listaProcesos.getNext();
+			
+			//si es nulo es que no se ha inicializado entonces coger el primero
+			if (procesoAEjecutar==null)
+				procesoAEjecutar=listaProcesos.getFirst();
+			
+			//procesar el proceso
 			this.cpu.procesar(procesoAEjecutar);
 			
 			//comprobar si hay que eliminar

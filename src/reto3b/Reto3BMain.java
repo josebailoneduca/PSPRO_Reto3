@@ -26,7 +26,7 @@ public class Reto3BMain {
 		//Scheduler
 		Scheduler scheduler = new Scheduler(dispatcher, cpu);
 		//generacion de los procesos iniciales
-		for (int i = 0; i < 500; i++) {
+		for (int i = 0; i < 10000; i++) {
 			dispatcher.generarProceso(scheduler);
 		}
 		//Iniciar el funcionamiento del scheduler
