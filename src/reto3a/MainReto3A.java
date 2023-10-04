@@ -1,7 +1,7 @@
 package reto3a;
 
 
-public class Main {
+public class MainReto3A {
 
 	
 	// preguntar si en la lista circular doble enlazada al acerla ordenada debemos permitir la insercion de elementos no ordenados

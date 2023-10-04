@@ -44,6 +44,9 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 
 	}
 
+
+	
+	
 	/**
 	 * Atributos
 	 */
@@ -80,45 +83,33 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 		} else {
 			boolean agregado = false;
 			int i = 0;
-			int j = this.cantidad - 1;
-			Nodo<T> menor = this.cabecera.getFirst();
-			Nodo<T> mayor = this.cabecera.getTail();
+			Nodo<T> actual = this.cabecera.getFirst();
 			while (!agregado) {
-				//comprobar desde fin
-				if (mayor.getContenido().compareTo(elemento) > 0) {
-					mayor = mayor.getAnterior();
-					j--;
-				} else {
-					nuevo.setSiguiente(mayor.getSiguiente());
-					nuevo.setAnterior(mayor);
-					mayor.setSiguiente(nuevo);
-					nuevo.getSiguiente().setAnterior(nuevo);
-					//posicion final
-					if (j==cantidad-1) {
-						this.cabecera.setTail(nuevo);
-						this.cabecera.getFirst().setAnterior(nuevo);
-						nuevo.setSiguiente(this.cabecera.getFirst());
-					}
-					agregado = true;
-				}
-				//comprobar desde inicio
-				if (!agregado) {
-					if (menor.getContenido().compareTo(elemento) <= 0) {
-						menor = menor.getSiguiente();
+				//Si hay que agregarlo al final 
+				if (i==this.size()) {
+					Nodo<T> ultimo=this.cabecera.getTail();
+					Nodo<T> primero=this.cabecera.getTail();
+					ultimo.setSiguiente(nuevo);
+					nuevo.setAnterior(ultimo);
+					nuevo.setSiguiente(primero);
+					primero.setAnterior(nuevo);
+					this.cabecera.setTail(nuevo);
+				//si aun no se ha llegado al final buscar siguiente
+				}else if (actual.getContenido().compareTo(elemento) <= 0) {
+						actual = actual.getSiguiente();
 						i++;
-					} else {
-						nuevo.setSiguiente(menor);
-						nuevo.setAnterior(menor.getAnterior());
-						menor.setAnterior(nuevo);
-						nuevo.getAnterior().setSiguiente(nuevo);
-						if (i==0) {
+					//si no es menor o igual es que es mas grande
+					//por lo tanto hay que agregarlo justo antes del actual
+					}else {
+						Nodo<T> anterior=actual.getAnterior();
+						anterior.setSiguiente(nuevo);
+						nuevo.setAnterior(anterior);
+						nuevo.setSiguiente(actual);
+						actual.setAnterior(nuevo);
+						//si el anterior es tail estamos introduciendo en primera posicion
+						if(anterior.equals(this.cabecera.getTail()))
 							this.cabecera.setFirst(nuevo);
-							this.cabecera.getTail().setSiguiente(nuevo);
-							nuevo.setAnterior(this.cabecera.getTail());
-						}
-						agregado = true;
 					}
-				}
 			}
 		}
 
@@ -127,15 +118,19 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 
 	@Override
 	public void remove(int posicion) {
+		//check de posicion valida
 		if (posicion >= this.cantidad || posicion < 0)
 			throw new InvalidParameterException("Indice no válido");
+		
+		
 		try {
-			// caso de solo 1 elemento
+			
+			// caso de solo 1 elemento en la lista
 			if (this.cantidad == 1) {
 				this.cabecera.setFirst(null);
 				this.cabecera.setTail(null);
 				this.cabecera.setActual(null);
-
+				
 				// caso de 2 elementos o mas
 			} else {
 				Nodo<T> aBorrar = getNodoAt(posicion);
@@ -152,7 +147,6 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 				if (posicion == this.cantidad - 1)
 					this.cabecera.setTail(anterior);
 			}
-
 			// actualizar cantidad
 			this.cantidad--;
 		} catch (InvalidParameterException err) {
@@ -165,23 +159,44 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 		// si esta vacia retornamos -1 directamente
 		if (this.cantidad == 0)
 			return -1;
-
-		// Inicializa si es encontrado o no
-		boolean encontrado = false;
-
-		// recorrer la lista buscando el elemento
-		Nodo<T> posicion = cabecera.getFirst();
-		int indice = 0;
-		do {
-			encontrado = posicion.getContenido().equals(elemento);
-			if (!encontrado) {
-				posicion = posicion.getSiguiente();
-				indice++;
+		
+		int nPosInicioAsc = this.size()/2;
+		int nPosInicioDesc=this.size()-nPosInicioAsc;
+		Integer posLocalizadaAsc=null;
+		Integer posLocalizadaDesc=null;
+		ResultadoBusqueda resultado = new ResultadoBusqueda();
+		Buscador buscadorAsc=new Buscador<T>(
+				true, 
+				this.cabecera.getFirst(),
+				nPosInicioAsc,
+				elemento,
+				resultado);
+		Buscador buscadorDesc=new Buscador<T>(
+				false, 
+				this.cabecera.getTail(),
+				nPosInicioDesc,
+				elemento,
+				resultado);
+		buscadorAsc.start();
+		buscadorDesc.start();
+		
+		while (!buscadorAsc.isParado()&&!buscadorDesc.isParado()) {
+			
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} while (!posicion.equals(this.cabecera.getFirst()) && !encontrado);
+			
+		}
+		buscadorAsc.setParado(true);
+		buscadorDesc.setParado(true);
+		
 
+		
 		// retorno del resultado
-		return (encontrado) ? indice : -1;
+		return resultado.getResultado();
 	}
 
 	@Override

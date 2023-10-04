@@ -16,7 +16,7 @@ package reto3b;
 
  * 
  */
-public class Reto3BMain {
+public class MainReto3B {
 
 	public static void main(String[] args) {
 		//CPU  a usar
