@@ -1,10 +1,21 @@
 package reto3a;
 
 
+
+
+
+/**
+ * Punto de entrada para el Reto 3 apartado A
+ * 
+ * RETO 3 A:
+ * 
+ * Crear una lista doblemente enlazada circular ordenada que implemente la busqueda de un elemento usando 2 hebras que busquen 
+ * cada una dese el inicio y desde el final de la lista respectivamente
+ */
 public class MainReto3A {
 
 	
-	// preguntar si en la lista circular doble enlazada al acerla ordenada debemos permitir la insercion de elementos no ordenados
+	 
 	
 	public static void main(String[] args) {
 		//creacion de la lista
@@ -15,8 +26,9 @@ public class MainReto3A {
 		miLista.add( "C");
 		miLista.add("E");
 		miLista.add("F");
-		miLista.add( "V");
+		miLista.add( "D");
 		miLista.add( "A");
+		System.out.println(miLista.listar());
 		//listados internos
 		System.out.println("\nLista desde la clase\n----------------");
 		System.out.println(miLista.listar());

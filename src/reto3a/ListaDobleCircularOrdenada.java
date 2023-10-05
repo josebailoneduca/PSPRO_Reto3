@@ -88,12 +88,13 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 				//Si hay que agregarlo al final 
 				if (i==this.size()) {
 					Nodo<T> ultimo=this.cabecera.getTail();
-					Nodo<T> primero=this.cabecera.getTail();
+					Nodo<T> primero=this.cabecera.getFirst();
 					ultimo.setSiguiente(nuevo);
 					nuevo.setAnterior(ultimo);
 					nuevo.setSiguiente(primero);
 					primero.setAnterior(nuevo);
 					this.cabecera.setTail(nuevo);
+					agregado=true;
 				//si aun no se ha llegado al final buscar siguiente
 				}else if (actual.getContenido().compareTo(elemento) <= 0) {
 						actual = actual.getSiguiente();
@@ -109,6 +110,7 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 						//si el anterior es tail estamos introduciendo en primera posicion
 						if(anterior.equals(this.cabecera.getTail()))
 							this.cabecera.setFirst(nuevo);
+						agregado=true;
 					}
 			}
 		}
