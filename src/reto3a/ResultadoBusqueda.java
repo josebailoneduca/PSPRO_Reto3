@@ -4,7 +4,7 @@ package reto3a;
  * Clase para almacenar el resultado de las busquedas
  */
 public class ResultadoBusqueda {
-	int resultado;
+	int resultado=-1;
 
 	public int getResultado() {
 		return resultado;

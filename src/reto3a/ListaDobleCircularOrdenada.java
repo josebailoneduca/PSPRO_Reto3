@@ -157,48 +157,52 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 	}
 
 	@Override
-	public int contains(T elemento) {
+	public int contains(T elementoBusqueda) {
 		// si esta vacia retornamos -1 directamente
 		if (this.cantidad == 0)
 			return -1;
 		
 		int nPosInicioAsc = this.size()/2;
 		int nPosInicioDesc=this.size()-nPosInicioAsc;
-		Integer posLocalizadaAsc=null;
-		Integer posLocalizadaDesc=null;
-		ResultadoBusqueda resultado = new ResultadoBusqueda();
-		Buscador buscadorAsc=new Buscador<T>(
+		ResultadoBusqueda resultadoAsc = new ResultadoBusqueda();
+		ResultadoBusqueda resultadoDesc = new ResultadoBusqueda();
+		Buscador<T> buscadorAsc=new Buscador<T>(
 				true, 
 				this.cabecera.getFirst(),
 				nPosInicioAsc,
-				elemento,
-				resultado);
-		Buscador buscadorDesc=new Buscador<T>(
+				elementoBusqueda,
+				resultadoAsc);
+		Buscador<T> buscadorDesc=new Buscador<T>(
 				false, 
 				this.cabecera.getTail(),
 				nPosInicioDesc,
-				elemento,
-				resultado);
+				elementoBusqueda,
+				resultadoDesc);
 		buscadorAsc.start();
 		buscadorDesc.start();
-		
-		while (!buscadorAsc.isParado()&&!buscadorDesc.isParado()) {
-			
+		boolean parar=false;
+		while (!parar) {
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			if (buscadorAsc.isTerminar()&&buscadorDesc.isTerminar())
+				parar=true;
+			if (buscadorAsc.isTerminar()&&buscadorAsc.isEncontrado())
+				parar=true;
+			if (buscadorDesc.isTerminar()&&buscadorDesc.isEncontrado())
+				parar=true;
 		}
 		buscadorAsc.setParado(true);
 		buscadorDesc.setParado(true);
-		
 
+		if (buscadorAsc.isEncontrado())
+			return resultadoAsc.getResultado();
+		if (buscadorDesc.isEncontrado())
+			return this.size()-1-resultadoDesc.getResultado();
 		
-		// retorno del resultado
-		return resultado.getResultado();
+		return -1;
 	}
 
 	@Override

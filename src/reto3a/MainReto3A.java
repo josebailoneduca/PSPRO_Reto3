@@ -57,7 +57,15 @@ public class MainReto3A {
 		System.out.println("\nRecogida de posiciones\n----------------");
 		System.out.println("Posicion de 'B':"+miLista.contains("B"));
 		System.out.println("Posicion de 'C':"+miLista.contains("C"));
+		System.out.println("Posicion de 'D':"+miLista.contains("D"));
 		System.out.println("Posicion de 'E':"+miLista.contains("E"));
+		System.out.println("Posicion de 'F':"+miLista.contains("F"));
+		System.out.println("Posicion de 'F':"+miLista.contains("F"));
+		System.out.println("Posicion de 'E':"+miLista.contains("E"));
+		System.out.println("Posicion de 'D':"+miLista.contains("D"));
+		System.out.println("Posicion de 'C':"+miLista.contains("C"));
+		System.out.println("Posicion de 'B':"+miLista.contains("B"));
+		//resultado de busqueda
 		System.out.println("Posicion de 'Z':"+miLista.contains("Z"));
  
 		//listados externos

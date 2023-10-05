@@ -6,48 +6,57 @@ public class Buscador<T extends Comparable<T>> extends Thread{
 	Nodo<T> actual;
 	int nPosicionesBuscar;
 	T busqueda;
-	boolean parado = false;
-	ResultadoBusqueda sincro;
+	boolean terminar = false;
+	boolean encontrado = false;
+	ResultadoBusqueda resultado;
 	/**
 	 * 
-	 * @param ascendente Define si es ascendente o descendente
+	 * @param ascendente Define la direccion de la busqueda si es ascendente o descendente
 	 * @param posicionInicial Referencia al nodo inicial
-	 * @param nPosicionesBuscar Cantidad de posiciones a buscar
+	 * @param nPosicionesBuscar Cantidad de posiciones a buscar contando el nodo inicial
 	 * @param busqueda Elemento a buscar
-	 * @param posicionLocalizada Objeto en el que guardar la pos localizada
+	 * @param resultado Objeto en el que guardar la pos localizada
 	 */
-	public Buscador(boolean ascendente, Nodo<T> posicionInicial, int nPosicionesBuscar, T busqueda, ResultadoBusqueda sincro) {
+	public Buscador(boolean ascendente, Nodo<T> posicionInicial, int nPosicionesBuscar, T busqueda, ResultadoBusqueda resultado) {
 		this.esAscendente = ascendente;
 		this.actual = posicionInicial;
 		this.nPosicionesBuscar = nPosicionesBuscar;
 		this.busqueda = busqueda;
-		this.sincro = sincro;
+		this.resultado = resultado;
+		this.encontrado=false;
 	}
 	
 	
 	@Override
 	public void run() {
 		int i  =0;
-		while (!parado && i<this.nPosicionesBuscar) {
+		while (!terminar && i<=this.nPosicionesBuscar&&!this.encontrado) {
 			if (this.actual.getContenido().equals(this.busqueda)) {
-				this.sincro.setResultado(i);
-				this.parado=true;
+				this.resultado.setResultado(i);
+				this.encontrado=true;
 			}else {
 				this.actual = (this.esAscendente)?actual.getSiguiente():actual.getAnterior();
 				i++;
 			}
 		}
-		
+		this.terminar=true;
 	}
 
 
-	public boolean isParado() {
-		return parado;
+	
+	
+	public boolean isEncontrado() {
+		return encontrado;
+	}
+
+
+	public boolean isTerminar() {
+		return terminar;
 	}
 
 
 	public void setParado(boolean parar) {
-		this.parado = parar;
+		this.terminar = parar;
 	}
 	
 }
