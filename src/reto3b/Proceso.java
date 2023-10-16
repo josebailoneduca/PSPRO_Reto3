@@ -2,29 +2,54 @@ package reto3b;
 
 import java.util.Objects;
 
+
+/**
+ * Simula in proceso. Contiene un identificador y la cantidad de ciclos restantes para terminarse
+ */
 public class Proceso {
+	
+	/**
+	 * Id del proceso
+	 */
 	private int id;
+	
+	/**
+	 * Cantidad de ciclos restantes para terminar
+	 */
 	private int ciclos;
+	
+	/**
+	 * Constructor 
+	 * 
+	 * @param id Id del proceso
+	 * @param ciclos Cantidad de cilos de CPU de vida
+	 */
 	public Proceso(int id, int ciclos) {
-		super();
 		this.id = id;
 		this.ciclos = ciclos;
 	}
+	
+	
 	public int getCiclos() {
 		return ciclos;
 	}
+	
+	
 	public void setCiclos(int ciclos) {
 		this.ciclos = ciclos;
 		if (this.ciclos<0) 
 			this.ciclos=0;
 	}
+	
 	public int getId() {
 		return id;
 	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -36,6 +61,7 @@ public class Proceso {
 		Proceso other = (Proceso) obj;
 		return id == other.id;
 	}
+	
 	@Override
 	public String toString() {
 		return "Proceso [id=" + id + ", ciclos=" + ciclos + "]";

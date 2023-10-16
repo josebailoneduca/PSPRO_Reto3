@@ -162,10 +162,15 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 		if (this.cantidad == 0)
 			return -1;
 		
+		//posiciones a recorrer por el hilo ascendente
 		int nPosInicioAsc = this.size()/2;
+		//posiciones a recorrer por el hilo descend3ente
 		int nPosInicioDesc=this.size()-nPosInicioAsc;
+		//objetos de almacenamiento de los resultados de cada hilo
 		ResultadoBusqueda resultadoAsc = new ResultadoBusqueda();
 		ResultadoBusqueda resultadoDesc = new ResultadoBusqueda();
+		
+		//hilos buscadores
 		Buscador<T> buscadorAsc=new Buscador<T>(
 				true, 
 				this.cabecera.getFirst(),
@@ -178,8 +183,12 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 				nPosInicioDesc,
 				elementoBusqueda,
 				resultadoDesc);
+		
+		//inicio de los hilos
 		buscadorAsc.start();
 		buscadorDesc.start();
+		
+		//comprobacion de si hay que parar
 		boolean parar=false;
 		while (!parar) {
 			try {
@@ -187,18 +196,25 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			//si ambos han terminado parar
 			if (buscadorAsc.isTerminar()&&buscadorDesc.isTerminar())
 				parar=true;
+			//si ascendete ha terminado y ademas ha encontrado 
 			if (buscadorAsc.isTerminar()&&buscadorAsc.isEncontrado())
 				parar=true;
+			//si descendente ha terminado y ademas ha encontrado
 			if (buscadorDesc.isTerminar()&&buscadorDesc.isEncontrado())
 				parar=true;
 		}
+		//obligar a parar a ambos hilos por si la espera anterior ha terminado por haberse encontrado
+		//el resultado en alguno de los hilos
 		buscadorAsc.setParado(true);
 		buscadorDesc.setParado(true);
 
+		//si el ascendente ha encontrado devolvemos el resultado ascendente
 		if (buscadorAsc.isEncontrado())
 			return resultadoAsc.getResultado();
+		//si el descend3ente ha encontrado devolvemos el resultado calculado de descendente
 		if (buscadorDesc.isEncontrado())
 			return this.size()-1-resultadoDesc.getResultado();
 		

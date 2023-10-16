@@ -2,13 +2,39 @@ package reto3b;
 
 import reto3b.listadoblecircular.ListaDobleCircular;
 
+
+/**
+ * Se encarga de simular la administracion de entrada de procesos en CPU según el algoritmo
+ * Round-robin
+ */
 public class Scheduler {
+	/**
+	 * Almacena los procesos
+	 */
 	private ListaDobleCircular<Proceso> listaProcesos=new ListaDobleCircular<Proceso>();
+	
+	/**
+	 * Almacena los procesos que ha eliminado. Sirve para determinar cuando pedir mas procesos
+	 */
 	private int eliminados=0;
+	
+	/**
+	 * Refernica al dispacher para ordenarle crear mas procesos
+	 */
 	private Dispatcher dispatcher;
+	
+	/**
+	 * CPU que consumira los procesos
+	 */
 	private CPU cpu;
 
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param dispatcher Dispatcher creador de procesos
+	 * @param cpu CPU consumidora de procesos
+	 */
 	public Scheduler(Dispatcher dispatcher, CPU cpu) {
 		super();
 		this.dispatcher = dispatcher;
@@ -26,11 +52,14 @@ public class Scheduler {
 	}
  
 
+	/**
+	 * Inicia el funcionamiento del scheduler
+	 */
 	public void iniciar() {
 		//mientras haya procesos
 		while(this.listaProcesos.size()>0) {
 			
-			//recoger siguiente
+			//recoger siguiente proceso en la lista
 			Proceso procesoAEjecutar=listaProcesos.getNext();
 			
 			//si es nulo es que no se ha inicializado entonces coger el primero
