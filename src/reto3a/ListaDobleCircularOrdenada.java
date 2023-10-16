@@ -56,7 +56,7 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 	private Cabecera cabecera;
 
 	/**
-	 * Almacena la cantidad
+	 * Almacena la cantidad de elementos
 	 */
 	private int cantidad;
 
