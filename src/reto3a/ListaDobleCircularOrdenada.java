@@ -2,6 +2,7 @@ package reto3a;
 
 import java.security.InvalidParameterException;
 
+
 /**
  * Lista de lementos enlazados doblemente ciruclar
  * 
@@ -10,8 +11,9 @@ import java.security.InvalidParameterException;
 
 public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements ListaDobleCiruclarOrdenadaInterface<T> {
 
+	//CLASE ANIDADA******************************************************************
 	/**
-	 * Clase cabecera Almacena referencias al primero, el ultimo y el actual
+	 * Clase cabecera Almacena referencias al prime nodo, el ultimo y el actual
 	 */
 	private class Cabecera {
 		Nodo<T> first;
@@ -47,9 +49,9 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 
 	
 	
-	/**
-	 * Atributos
-	 */
+	
+	//ATRIBUTOS *********************************************************************
+	 
 	/**
 	 * Apunta al nodo inicial, final y actual
 	 */
@@ -122,10 +124,10 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 	public void remove(int posicion) {
 		//check de posicion valida
 		if (posicion >= this.cantidad || posicion < 0)
-			throw new InvalidParameterException("Indice no válido");
+			throw new IndexOutOfBoundsException("Indice no válido "+posicion );
 		
 		
-		try {
+ 
 			
 			// caso de solo 1 elemento en la lista
 			if (this.cantidad == 1) {
@@ -151,13 +153,32 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 			}
 			// actualizar cantidad
 			this.cantidad--;
-		} catch (InvalidParameterException err) {
-			throw err;
-		}
+ 
 	}
+	
+	
+	@Override
+	public boolean remove(T elemento) {
+		int posicion = contains(elemento);
+		if (posicion==-1)
+			return false;
+		else
+			remove(posicion);
+		return true;
+		
 
+}
+
+	
 	@Override
 	public int contains(T elementoBusqueda) {
+		/*
+		 * Implementa la busqueda con dos hebras que recorren la lista en direcciones opuestas
+		 * desda cada extremo comprobando cada una la mitad de la lista y esperando a que terminen. 
+		 * Cuando alguna termina por haber encontrado el elemento se termina la espera y se paran ambas hebras.
+		 * Si ambas hebras han terminado por si solas tambien se termina la espera aunque ninguna haya encontrado
+		 * el elemento buscado.
+		 */
 		// si esta vacia retornamos -1 directamente
 		if (this.cantidad == 0)
 			return -1;
@@ -177,6 +198,7 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 				nPosInicioAsc,
 				elementoBusqueda,
 				resultadoAsc);
+		
 		Buscador<T> buscadorDesc=new Buscador<T>(
 				false, 
 				this.cabecera.getTail(),
@@ -196,12 +218,15 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
 			//si ambos han terminado parar
 			if (buscadorAsc.isTerminar()&&buscadorDesc.isTerminar())
 				parar=true;
+			
 			//si ascendete ha terminado y ademas ha encontrado 
 			if (buscadorAsc.isTerminar()&&buscadorAsc.isEncontrado())
 				parar=true;
+			
 			//si descendente ha terminado y ademas ha encontrado
 			if (buscadorDesc.isTerminar()&&buscadorDesc.isEncontrado())
 				parar=true;
@@ -214,10 +239,12 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 		//si el ascendente ha encontrado devolvemos el resultado ascendente
 		if (buscadorAsc.isEncontrado())
 			return resultadoAsc.getResultado();
+		
 		//si el descend3ente ha encontrado devolvemos el resultado calculado de descendente
 		if (buscadorDesc.isEncontrado())
 			return this.size()-1-resultadoDesc.getResultado();
 		
+		//si ninguna ha encontrado resultado devuelve -1
 		return -1;
 	}
 
@@ -325,7 +352,7 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 	/**
 	 * Devuelve el nodo de la posicion indicada
 	 * 
-	 * @param posicion la posicion del nodo siendo 0 el primer elemento de la lista
+	 * @param posicion La posicion del nodo siendo 0 el primer elemento de la lista
 	 * @return el nodo de la posicion o null
 	 */
 	private Nodo<T> getNodoAt(int posicion) {
@@ -338,5 +365,8 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 			posActual++;
 		}
 		return actual;
+
 	}
 }
+
+

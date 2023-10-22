@@ -17,6 +17,13 @@ public interface ListaDobleCiruclarOrdenadaInterface<T extends Comparable<T>> {
 	public void remove(int posicion);
 	
 	/**
+	 * Eliminar 1 ocurrencia del elemento
+	 * @param elemento Elemento a eliminar
+	 * @return True si ha eliminado False si no ha eliminado
+	 */
+	public boolean remove(T elemento);
+	
+	/**
 	 * Devuelve si la lista contiene el elemento
 	 * @param elemento
 	 * @return True si lo contiene, False si no lo contiene. Usa la funcion Equals
