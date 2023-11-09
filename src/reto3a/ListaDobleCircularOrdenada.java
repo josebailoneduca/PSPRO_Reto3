@@ -158,15 +158,11 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 	
 	
 	@Override
-	public boolean remove(T elemento) {
+	public int remove(T elemento) {
 		int posicion = contains(elemento);
-		if (posicion==-1)
-			return false;
-		else
+		if (posicion!=-1)
 			remove(posicion);
-		return true;
-		
-
+		return posicion;
 }
 
 	
@@ -192,14 +188,14 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 		ResultadoBusqueda resultadoDesc = new ResultadoBusqueda();
 		
 		//hilos buscadores
-		Buscador<T> buscadorAsc=new Buscador<T>(
+		Buscador<T> buscadorAscendente=new Buscador<T>(
 				true, 
 				this.cabecera.getFirst(),
 				nPosInicioAsc,
 				elementoBusqueda,
 				resultadoAsc);
 		
-		Buscador<T> buscadorDesc=new Buscador<T>(
+		Buscador<T> buscadorDescendente=new Buscador<T>(
 				false, 
 				this.cabecera.getTail(),
 				nPosInicioDesc,
@@ -207,8 +203,8 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 				resultadoDesc);
 		
 		//inicio de los hilos
-		buscadorAsc.start();
-		buscadorDesc.start();
+		buscadorAscendente.start();
+		buscadorDescendente.start();
 		
 		//comprobacion de si hay que parar
 		boolean parar=false;
@@ -220,28 +216,35 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 			}
 			
 			//si ambos han terminado parar
-			if (buscadorAsc.isTerminar()&&buscadorDesc.isTerminar())
+			if (buscadorAscendente.isTerminar()&&buscadorDescendente.isTerminar())
 				parar=true;
 			
-			//si ascendete ha terminado y ademas ha encontrado 
-			if (buscadorAsc.isTerminar()&&buscadorAsc.isEncontrado())
+			//si ascendete ha terminado y ademas ha encontrado  se termina la espera
+			if (buscadorAscendente.isTerminar()&&buscadorAscendente.isEncontrado())
 				parar=true;
 			
-			//si descendente ha terminado y ademas ha encontrado
-			if (buscadorDesc.isTerminar()&&buscadorDesc.isEncontrado())
+			//si descendente ha terminado y ademas ha encontrado  se termina la espera
+			if (buscadorDescendente.isTerminar()&&buscadorDescendente.isEncontrado())
 				parar=true;
 		}
 		//obligar a parar a ambos hilos por si la espera anterior ha terminado por haberse encontrado
 		//el resultado en alguno de los hilos
-		buscadorAsc.setParado(true);
-		buscadorDesc.setParado(true);
-
+		buscadorAscendente.setParado(true);
+		buscadorDescendente.setParado(true);
+		//asegurar el fin de los hilos antes de comprobar resultado
+		try {
+			buscadorAscendente.join();
+			buscadorDescendente.join();
+		} catch (InterruptedException e) {
+			
+		}
+		
 		//si el ascendente ha encontrado devolvemos el resultado ascendente
-		if (buscadorAsc.isEncontrado())
+		if (buscadorAscendente.isEncontrado())
 			return resultadoAsc.getResultado();
 		
-		//si el descend3ente ha encontrado devolvemos el resultado calculado de descendente
-		if (buscadorDesc.isEncontrado())
+		//si el descendente ha encontrado devolvemos el resultado calculado de descendente
+		if (buscadorDescendente.isEncontrado())
 			return this.size()-1-resultadoDesc.getResultado();
 		
 		//si ninguna ha encontrado resultado devuelve -1
