@@ -14,7 +14,7 @@ public interface ListaDobleCiruclarOrdenadaInterface<T extends Comparable<T>> {
 	 * Eliminar posicion
 	 * @param posicion Posicion a eliminar
 	 */
-	public void remove(int posicion);
+	public T remove(int posicion);
 	
 	/**
 	 * Eliminar 1 ocurrencia del elemento

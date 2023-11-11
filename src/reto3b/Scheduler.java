@@ -79,9 +79,12 @@ public class Scheduler {
 			
 			//comprobar si hay que generar
 			if (this.eliminados==100) {
+				System.out.println("Han terminado 100 procesos y Entra nuevo proceso.");
 				this.dispatcher.generarProceso(this);
 				this.eliminados=0;
 			}
+			
+		 
 		}
 	}
 	

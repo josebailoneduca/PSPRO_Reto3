@@ -1,7 +1,7 @@
 package reto3a;
 
 /**
- * Se encarga de buscar un elemento en una cadena de nodos yendo en la
+ * Su metodo run se encarga de buscar un elemento en una cadena de nodos yendo en la
  * direcccion adecuada y devolviendo a traves de un objeto externo la cantidad
  * de saltos que ha tenido que dar hasta encontrarlo
  * 
@@ -12,72 +12,64 @@ public class Buscador<T extends Comparable<T>> extends Thread {
 	/**
 	 * direccion de la busqueda en la cadena de nodos
 	 */
-	boolean esAscendente;
+	private boolean esAscendente;
 
 	/**
 	 * el nodo actual
 	 */
-	Nodo<T> actual;
+	private Nodo<T> actual;
 
 	/**
-	 * cantidad de posiciones a buscar en la cadena antes de dar el resultado por no
-	 * encontrado
+	 * cantidad de posiciones a buscar en la cadena antes de dar el resultado por no encontrado
 	 */
-	int nPosicionesBuscar;
+	private int nPosicionesBuscar;
 
 	/**
 	 * Elemento que hay que localizar
 	 */
-	T busqueda;
+	private T busqueda;
 
 	/**
-	 * Objeto en el que almacenar el resultado
+	 * Posicion en la que se ha encontrado el elemento buscado. -1 significa no encontrado
 	 */
-	ResultadoBusqueda resultado;
-
+	private int resultado =-1;
+	
 	/**
-	 * Define si debe terminar
+	 * Define si debe terminar. Puede ser establecido desde fuera
 	 */
-	boolean terminar = false;
-
-	/**
-	 * Define si ha encontrado o no el elemento buscado
-	 */
-	boolean encontrado = false;
-
+	private boolean terminado = false;
+ 
+	
+	
 	/**
 	 * 
 	 * @param ascendente        Define la direccion de la busqueda si es ascendente
 	 *                          o descendente
 	 * @param posicionInicial   Referencia al nodo inicial
-	 * @param nPosicionesBuscar Cantidad de posiciones a buscar contando el nodo
+	 * @param nPosicionesBuscar Cantidad de posiciones en las que buscar contando el nodo
 	 *                          inicial
 	 * @param busqueda          Elemento a buscar
-	 * @param resultado         Objeto en el que guardar la pos localizada
 	 */
-	public Buscador(boolean ascendente, Nodo<T> posicionInicial, int nPosicionesBuscar, T busqueda,
-			ResultadoBusqueda resultado) {
+	public Buscador(boolean ascendente, Nodo<T> posicionInicial, int nPosicionesBuscar, T busqueda) {
 		this.esAscendente = ascendente;
 		this.actual = posicionInicial;
 		this.nPosicionesBuscar = nPosicionesBuscar;
 		this.busqueda = busqueda;
-		this.resultado = resultado;
-		this.encontrado = false;
+		this.resultado = -1;
 	}
 
 	@Override
 	public void run() {
 		int i = 0;
 
-		// mientras no haya que terminar y el indice sea menor o igual que el numero de
+		// Bucle mientras no haya que terminar y el indice sea menor o igual que el numero de
 		// posiciones a buscar
-		// y no se haya encontrado el bucle seguira procesando
-		while (!terminar && i <= this.nPosicionesBuscar && !this.encontrado) {
+		while (!terminado && i <= this.nPosicionesBuscar) {
 			// si el contenido del nodo actual es el elemento buscado se almacena el
-			// resultado y se marca como encontrado
+			// resultado, se marca como como terminado
 			if (this.actual.getContenido().equals(this.busqueda)) {
-				this.resultado.setResultado(i);
-				this.encontrado = true;
+				this.resultado=i;
+				this.terminado=true;
 			} else {
 				// en caso contrario se actualiza el nodo actual para la siguiente vuelta
 				// teniendo en cuenta
@@ -86,17 +78,18 @@ public class Buscador<T extends Comparable<T>> extends Thread {
 				i++;
 			}
 		}
-		// marcar el hilo como que ha terminado
-		this.terminar = true;
+		//asegurar que esta marcado como terminado por si el bucle termina por llegar al final
+		//sin encontrar resultado
+		this.terminado=true;
 	}
 
 	/**
-	 * Devuelve si ha encontrado
+	 * Devuelve si ha encontrado. Lo hace mirando si el resultado es mayor de -1 o no
 	 * 
-	 * @return true si enctontrado false si no encontrado
+	 * @return True si enctontrado y False si no encontrado
 	 */
 	public boolean isEncontrado() {
-		return encontrado;
+		return this.resultado>-1;
 	}
 
 	/**
@@ -104,16 +97,24 @@ public class Buscador<T extends Comparable<T>> extends Thread {
 	 * 
 	 * @return True si ha terminado y false si no lo ha hecho
 	 */
-	public boolean isTerminar() {
-		return terminar;
+	public boolean isTerminado() {
+		return terminado;
 	}
 
 	/**
 	 * Define si debe parar o no
 	 * @param parar El estado en el que se quiere poner. True para parar, False para no parar
 	 */
-	public void setParado(boolean parar) {
-		this.terminar = parar;
+	public void setTerminado(boolean parar) {
+		this.terminado = parar;
 	}
 
+	/**
+	 * Devuelve la posicion en la que se ha encontrado el elemento
+	 * @return El resultado (si es descendente sera la posicion desde el final). -1 si no se ha encontrado
+	 */
+	public int getResultado() {
+		return resultado;
+	}
+	
 }

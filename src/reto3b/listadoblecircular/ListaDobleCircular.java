@@ -10,14 +10,28 @@ import java.security.InvalidParameterException;
 
 public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 
+	//CLASE ANIDADA CABECERA******************************************************************
 	/**
 	 * Clase cabecera Almacena referencias al primero, el ultimo y el actual
 	 */
 	private class Cabecera {
+		/**
+		 * Nodo inicial
+		 */
 		Nodo<T> first;
+		
+		/**
+		 * Nodo final
+		 */
 		Nodo<T> tail;
+		
+		/**
+		 * Nodo en el puntero de lectura
+		 */
 		Nodo<T> actual;
 
+		
+		//GETTERS Y SETTERS
 		void setFirst(Nodo<T> nodo) {
 			this.first = nodo;
 		}
@@ -44,9 +58,7 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 
 	}
 
-	/**
-	 * Atributos
-	 */
+	//ATRIBUTOS *********************************************************************
 	/**
 	 * Apunta al nodo inicial, final y actual
 	 */
@@ -67,40 +79,50 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 		this.cantidad = 0;
 	}
 
+	
+	/**
+	 * Agrega un elemento en una posicion concreta desplazando a la derecha el elemento que hubiese en la posicion
+	 */
 	@Override
 	public void addIn(int posicionDeInsercion, T elemento) {
+		//Comprobar que la posicion de insercion es valida
 		if (posicionDeInsercion > this.size() || posicionDeInsercion < 0)
 			throw new IndexOutOfBoundsException("Indice no válido");
 
 			//crea el nuevo nodo
 			Nodo<T> nuevo = new Nodo<T>(elemento, null, null);
+			Nodo<T> anterior =null;
+			Nodo<T> siguiente=null;
 			
-			//si no hay elementos se trata individualmente
+			//EN CASO DE SER EL PRIMER ELEMENTO QUE SE AGREGA
+			//se define como first, tail y se enlaza consigo mismo
 			if (this.cantidad == 0) {
 				cabecera.setTail(nuevo);
 				cabecera.setFirst(nuevo);
 				nuevo.setAnterior(nuevo);
 				nuevo.setSiguiente(nuevo);
-				//caso agregar al final
-				
-			//si se agrega nuevo al final de la lista se trata individualmente
-			}else if (posicionDeInsercion==this.cantidad) {
-				Nodo<T> anterior = this.cabecera.getTail();
-				Nodo<T> siguiente = this.cabecera.getFirst();
-				anterior.setSiguiente(nuevo);
-				nuevo.setAnterior(anterior);
-				nuevo.setSiguiente(siguiente);
-				siguiente.setAnterior(nuevo);
+				this.cantidad++;
+				return;
+			}	
 			
-			//cualquier otro caso se trata igual
+			//CASOS CUANDO LA LISTA YA TIENE ELEMENTOS
+			//Calculo del siguiente y el anterior dependiendo del caso
+			
+			//Si se agrega al final de la lista
+			 if (posicionDeInsercion==this.cantidad) {
+				anterior = this.cabecera.getTail();
+				siguiente = this.cabecera.getFirst();
+			//Cualquier otro caso se trata igual
 			}else {
-				Nodo<T> siguiente = getNodoAt(posicionDeInsercion);
-				Nodo<T> anterior = siguiente.getAnterior();
-				nuevo.setSiguiente(siguiente);
-				nuevo.setAnterior(anterior);
-				anterior.setSiguiente(nuevo);
-				siguiente.setAnterior(nuevo);
+				siguiente = getNodoAt(posicionDeInsercion);
+				anterior = siguiente.getAnterior();
 			}
+			
+			//enlazado de nodos
+			anterior.setSiguiente(nuevo);
+			nuevo.setAnterior(anterior);
+			nuevo.setSiguiente(siguiente);
+			siguiente.setAnterior(nuevo);
 			
 			// actualiza first y tail en la cabecera si es necesario
 			if (posicionDeInsercion == 0) 
@@ -110,9 +132,12 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 			
 			//aumenta la cantidad
 			this.cantidad++;
-
 	}
 
+	
+	/**
+	 * Agrega al final
+	 */
 	@Override
 	public void addLast(T elemento) {
 		this.addIn(this.size(), elemento);
@@ -120,6 +145,11 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 	
 	
 
+	/**
+	 * Agrega antes del elemento del puntero actual de la cabecera
+	 * 
+	 * @param elemento El elemento agregar
+	 */
 	@Override
 	public void addBeforeCurrent(T elemento) {
 		//si esta vacio o no se ha inicializado el actual de la cabecera agregar al final
@@ -153,7 +183,7 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 					this.cabecera.setTail(null);
 					this.cabecera.setActual(null);
 					
-					// caso de 2 elementos o mas
+				// caso de 2 elementos o mas
 				} else {
 				Nodo<T> aBorrar = getNodoAt(posicion);
 				Nodo<T> anterior = aBorrar.getAnterior();
@@ -175,7 +205,9 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 				
 			// actualizar cantidad
 			this.cantidad--;
+			
 		} catch (InvalidParameterException err) {
+			//se ha intentado acceder a una posicion no valida
 			throw err;
 		}
 	}
@@ -189,6 +221,7 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 			this.remove(pos);
 	}
 
+	
 	@Override
 	public int contains(T elemento) {
 		//si esta vacia retornamos -1 directamente
@@ -213,6 +246,7 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 		return (encontrado) ? indice : -1;
 	}
 
+	
 	@Override
 	public String listar() {
 		String salida = "[";
@@ -230,6 +264,7 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 		return salida;
 	}
 
+	
 	@Override
 	public T getFirst() {
 		if (!this.isEmpty()) {

@@ -44,19 +44,19 @@ public class MainReto3A {
 		System.out.println("\n--------------------------------\nBorrado por indice\n--------------------------------");
 		System.out.println("Estado previo a los borrados:");
 		System.out.println(miLista.listar());
-		System.out.println("\nBorrado de posicion primera 0:");
-		miLista.remove(0);
+		System.out.println("\nBorrado de posicion primera 0"); 
+		System.out.println("Devuelve: "+miLista.remove(0));
 		System.out.println(miLista.listar());
-		System.out.println("\nBorrado de posicion intermedia 4:");
-		miLista.remove(4);
+		System.out.println("\nBorrado de posicion intermedia 4");
+		System.out.println( "Devuelve: "+miLista.remove(4));
 		System.out.println(miLista.listar());
-		System.out.println("\nBorrado de posicion final(" + (miLista.size() - 1) + "):");
-		miLista.remove(miLista.size() - 1);
+		System.out.println("\nBorrado de posicion final(" + (miLista.size() - 1) + ")");
+		System.out.println( "Devuelve: "+miLista.remove(miLista.size() - 1));
 		System.out.println(miLista.listar());
 		try {
 			miLista.remove(10);
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("\nAl intentar borrar el indice 10 que está fuera de rango salta excepcion con mensaje: "
+			System.out.println("\nAl intentar borrar el indice 10(que está fuera de rango) salta excepcion con mensaje: "
 					+ e.getMessage());
 		}
 		System.out.println(miLista.listar());
@@ -115,10 +115,15 @@ public class MainReto3A {
 		System.out.println("\n(PULSE INTRO PARA CONTINUAR)");
 		s.nextLine();
 
+		
+		
+		
 		/*
 		 * Busqueda entre miles de elementos
 		 */
 		ListaDobleCircularOrdenada<Integer> a = new ListaDobleCircularOrdenada<Integer>();
+		
+		//cantidad de elementos a agregar a la lista
 		int cantidad = 30000;
 
 		System.out.println("Creando lista con " + cantidad + " elementos");
@@ -126,13 +131,13 @@ public class MainReto3A {
 		for (int i = 0; i < cantidad; i++) {
 			a.add(r.nextInt());
 		}
-		System.out.println(cantidad + " elementos insertados.\n (Pulse intro para continuar y realizar busqueda)");
+		System.out.println(cantidad + " elementos insertados.\n (Pulse intro para continuar y realizar busquedas.)");
 		s.nextLine();
 
 		boolean busquedaActiva = true;
 		while (busquedaActiva) {
 			System.out.println(a.listar());
-			System.out.println("Introduzca el numero a buscar o 'salir' para terminar:");
+			System.out.println("\nIntroduzca el numero a buscar o 'salir' para terminar. Se mostrara el indice que corresponde al elemento o -1 si no esta:");
 			String busqueda = s.nextLine();
 			if (busqueda.endsWith("salir"))
 				System.exit(0);

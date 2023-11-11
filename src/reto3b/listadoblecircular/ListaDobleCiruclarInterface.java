@@ -15,6 +15,11 @@ public interface ListaDobleCiruclarInterface<T> {
 	public void addIn(int posicion,T elemento);
 	
 	
+	
+	/**
+	 * Agregar en la posicion anterior al nodo actual
+	 * @param elemento El elemento a agregar
+	 */
 	public void addBeforeCurrent(T elemento);
 	
 	/**
