@@ -5,6 +5,8 @@ import java.security.InvalidParameterException;
 /**
  * Lista de lementos enlazados doblemente ciruclar
  * 
+ * @author Jose Javier Bailon Ortiz
+ * 
  * @param <T> Clase de los elementos a guardar en la lista
  */
 
