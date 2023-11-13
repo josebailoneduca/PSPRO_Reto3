@@ -374,7 +374,9 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 	}
 
 	/**
-	 * Devuelve el elemento del inicio de la lista y pone la cabeza lectora apuntando al inicio
+	 * Devuelve el elemento del inicio de la lista y pone la cabeza lectora apuntando al inicio.
+	 * Si la lista esta vacia devuelve null
+	 * @return el primer elemento o null si esta vacia 
 	 */
 	@Override
 	public T getFirst() {
@@ -387,6 +389,8 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 
 	/**
 	 * Devuelve el elemento del final de la lista y pone la cabeza lectora apuntando al final
+	 * 
+ 	 * @return el ultimo elemento o null si esta vacia 
 	 */
 	@Override
 	public T getLast() {
@@ -401,23 +405,25 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 	 * Avanza el puntero de lectura y devuelve el valor 
 	 */
 	@Override
-	public T getNext() {
-		if (this.cabecera.getActual() != null) {
+	public T getNext() throws IllegalStateException{
+		if (this.cabecera!=null &&  this.cabecera.getActual() != null) {
 			this.cabecera.setActual(this.cabecera.getActual().getSiguiente());
+			return  this.cabecera.getActual().getContenido();
 		}
-		return (this.cabecera.getActual() != null) ? this.cabecera.getActual().getContenido() : null;
+		throw new IllegalStateException("Nodo actual no inicializado.No se puede acceder al siguiente elemento");
 	}
 
 	/**
 	 * Atrasa el puntero de lectura y devuelve el valor
 	 */
 	@Override
-	public T getPrevious() {
-		if (this.cabecera.getActual() != null) {
+	public T getPrevious() throws IllegalStateException{
+		if (this.cabecera!=null &&  this.cabecera.getActual() != null) {
 			this.cabecera.setActual(this.cabecera.getActual().getAnterior());
+			return  this.cabecera.getActual().getContenido();
 		}
-		return (this.cabecera.getActual() != null) ? this.cabecera.getActual().getContenido() : null;
-	}
+		throw new IllegalStateException("Nodo actual no inicializado.No se puede acceder al elemento anterior");
+ 	}
 
 	
 	/**
@@ -463,6 +469,8 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 	@Override
 	public boolean isFirst() {
 		Nodo<T> actual = this.cabecera.getActual();
+		if (actual==null)
+			return false;
 		Nodo<T> first = this.cabecera.getFirst();
 		boolean resultado = actual.equals(first);
 		return resultado;
@@ -475,6 +483,8 @@ public class ListaDobleCircularOrdenada<T extends Comparable<T>> implements List
 	@Override
 	public boolean isLast() {
 		Nodo<T> actual = this.cabecera.getActual();
+		if (actual==null)
+			return false;
 		Nodo<T> tail = this.cabecera.getTail();
 		boolean resultado = actual.equals(tail);
 		return resultado;

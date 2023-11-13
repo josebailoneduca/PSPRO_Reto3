@@ -125,39 +125,94 @@ public class MainReto3A {
 		
 		
 		/*
-		 * Busqueda entre miles de elementos
+		 * Creacion de lista para pruebas
 		 */
-		ListaDobleCircularOrdenada<Integer> a = new ListaDobleCircularOrdenada<Integer>();
+		ListaDobleCircularOrdenada<Integer> lista = new ListaDobleCircularOrdenada<Integer>();
 		
-		//cantidad de elementos a agregar a la lista
+		System.out.println("Se va a crear una lista con numeros enteros aleatorios.");
+		boolean recogido=false;
 		int cantidad = 30000;
+		while(!recogido) {
+			System.out.println("Introduzca la cantidad de elementos que quiere agregar o no especifique ninguno para agregar 30000 elementos:");
+			String entrada = s.nextLine();
+			if (entrada.equals("")) {
+				recogido=true;
+				cantidad=30000;
+			}
+			else {
+				try {
+					cantidad=Integer.parseInt(entrada);
+					if (cantidad>=0) 
+						recogido=true;
+					}
+				catch(NumberFormatException e) {}
+			}
+		}
 
+		//cantidad de elementos a agregar a la lista
 		System.out.println("Creando lista con " + cantidad + " elementos");
 		Random r = new Random();
 		for (int i = 0; i < cantidad; i++) {
-			a.add(r.nextInt());
+			lista.add(r.nextInt());
 		}
-		System.out.println(cantidad + " elementos insertados.\n (Pulse intro para continuar y realizar busquedas.)");
+		System.out.println(cantidad + " elementos insertados.\n (Pulse intro para continuar.)");
 		s.nextLine();
 
 		
 		while (true) {
-			System.out.println(a.listar());
-			System.out.println("\nIntroduzca el numero a buscar o 'salir' para terminar. Se mostrara el indice que corresponde al elemento o -1 si no esta:");
-			String busqueda = s.nextLine().trim();
-			if (busqueda.toLowerCase().equals("salir"))
+			System.out.println(lista.listar());
+			System.out.println("OPCIONES:");
+			System.out.println("(0)Agregar elemento");
+			System.out.println("(1)getFirst");
+			System.out.println("(2)getLast");
+			System.out.println("(3)getNext");
+			System.out.println("(4)getPrevious");
+			System.out.println("(5)Buscar");
+			System.out.println("(6)Salir");
+			System.out.println("Elija una opcion:");
+			String opcion = s.nextLine();
+			switch (opcion) {
+			case "0": 
+				System.out.println("Introduzca un numero entero: ");
+				try {
+					lista.add(Integer.parseInt(s.nextLine()));
+				}catch(NumberFormatException e) {System.out.println("Numero no valido");}
+				break;
+			case "1": 
+				System.out.println("Elemento actual: "+lista.getFirst());
+				break;
+			case "2": 
+				System.out.println("Elemento actual: "+lista.getLast());
+				break;
+			case "3": 
+				try{System.out.println("Elemento actual: "+lista.getNext());}catch(IllegalStateException e) {System.out.println("Excepcion capturada:"+e.getMessage());}
+				break;
+			case "4": 
+				try{System.out.println("Elemento actual: "+lista.getPrevious());}catch(IllegalStateException e) {System.out.println("Excepcion capturada:"+e.getMessage());}
+				break;
+			case "5": 
+				try {
+					System.out.println("Introduzca un numero entero:");
+					int busqueda = Integer.parseInt(s.nextLine().trim());
+					int indice = lista.contains(busqueda);
+					if (indice==-1)
+						System.out.println("La lista no tiene el elemento");
+					else 
+						System.out.println("El elemento esta en la posicion: "+indice);
+				}
+				catch(NumberFormatException e) {System.out.println("La busqueda debe ser un numero entero");}
+				break;
+			case "6": 
 				System.exit(0);
-			try {
-				int b = Integer.parseInt(busqueda);
-				System.out.println("Indice de la busqueda:" + a.contains(b));
-				System.out.println("\n(PULSE INTRO PARA CONTINUAR)");
-				s.nextLine();
-			} catch (NumberFormatException e) {
-				System.out.println("\nEscriba un numero entero a buscar o 'salir' para terminar");
-				s.nextLine();
+				break;
+
 			}
+			System.out.println("\n(PULSE INTRO PARA CONTINUAR)");
+				s.nextLine();
+			
 		}
 
 	}
 
 }
+

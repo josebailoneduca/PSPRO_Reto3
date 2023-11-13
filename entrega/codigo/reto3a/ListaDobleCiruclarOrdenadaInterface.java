@@ -55,12 +55,12 @@ public interface ListaDobleCiruclarOrdenadaInterface<T extends Comparable<T>> {
 	
 	/**
 	 * Devuelve el primero
-	 * @return El primer elemento
+	 * @return El primer elemento o null si está vacia
 	 */
 	public T getFirst();
 	/**
 	 * Devuelve el ultimo
-	 * @return El ultimo elemento
+	 * @return El ultimo elemento o null si está vacia
 	 */
 	public T getLast();
 	
@@ -81,14 +81,16 @@ public interface ListaDobleCiruclarOrdenadaInterface<T extends Comparable<T>> {
 	/**
 	 * Devuelve el siguiente elemento
 	 * @return El siguiente elemento
+	 * @throws IllegalStateException si aun no se ha ejecutado isFirst ni isLast
 	 */
-	public T getNext();
+	public T getNext() throws IllegalStateException;
 
 	/**
 	 * Devuelve el elemento anterior
 	 * @return El elemento anterior
+	 * @throws IllegalStateException si aun no se ha ejecutado isFirst ni isLast
 	 */
-	public T getPrevious();
+	public T getPrevious() throws IllegalStateException;
 
 	
 	/**
