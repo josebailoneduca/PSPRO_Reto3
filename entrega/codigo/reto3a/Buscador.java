@@ -77,7 +77,7 @@ public class Buscador<T extends Comparable<T>> extends Thread {
 			//si es hilo ascendente y se ha llegado a un elemento que es mayor que el elemento buscado	termina la busqueda
 			} else if (esAscendente&&this.actual.getContenido().compareTo(this.busqueda)>0){
 				this.terminado=true;
-			//si es hilo ascendente y se ha llegado a un elemento que es menor que el elemento buscado	termina la busqueda
+			//si es hilo es descendente y se ha llegado a un elemento que es menor que el elemento buscado	termina la busqueda
 			}else if (!esAscendente&&this.actual.getContenido().compareTo(this.busqueda)<0){
 				this.terminado=true;
 			}
