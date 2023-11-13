@@ -42,6 +42,6 @@ public class CPU {
 	public void procesar(Proceso p) {
 		int ciclosAGastar=r.nextInt(min, max+1);
 		p.setCiclos(p.getCiclos()-ciclosAGastar);
-		System.out.println("Gastados "+ciclosAGastar+" ciclos del proceso "+p);
+		System.out.println("Gastados "+ciclosAGastar+" ciclos del "+p);
 	}
 }
