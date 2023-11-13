@@ -6,6 +6,8 @@ import reto3b.listadoblecircular.ListaDobleCircular;
 /**
  * Se encarga de simular la administracion de entrada de procesos en CPU según el algoritmo
  * Round-robin
+ * 
+ * @author Jose Javier Bailon Ortiz
  */
 public class Scheduler {
 	/**
@@ -18,6 +20,10 @@ public class Scheduler {
 	 */
 	private int eliminados=0;
 	
+	/**
+	 * Cuantos procesos deben terminar para solicitar un nuevo proceso
+	 */
+	private int tasaRenovacion=100;
 	/**
 	 * Refernica al dispacher para ordenarle crear mas procesos
 	 */
@@ -34,11 +40,13 @@ public class Scheduler {
 	 * 
 	 * @param dispatcher Dispatcher creador de procesos
 	 * @param cpu CPU consumidora de procesos
+	 * @param tasaRenovacion Cantidad de procesos que deben terminar para que se solicite automaticamente un nuevo proceso.
 	 */
-	public Scheduler(Dispatcher dispatcher, CPU cpu) {
+	public Scheduler(Dispatcher dispatcher, CPU cpu, int tasaRenovacion) {
 		super();
 		this.dispatcher = dispatcher;
 		this.cpu = cpu;
+		this.tasaRenovacion=tasaRenovacion;
 	}
 
 
@@ -48,7 +56,7 @@ public class Scheduler {
 	 */
 	public void addProceso(Proceso proceso) {
 		this.listaProcesos.addBeforeCurrent(proceso);
-		System.out.println("Agregado: "+proceso+ " TOTAL:"+this.listaProcesos.size());
+		System.out.println("Agregado: "+proceso+ " Procesos en cola:"+this.listaProcesos.size());
 	}
  
 
@@ -78,8 +86,8 @@ public class Scheduler {
 			}
 			
 			//comprobar si hay que generar
-			if (this.eliminados==100) {
-				System.out.println("Han terminado 100 procesos y Entra nuevo proceso.");
+			if (this.eliminados==tasaRenovacion) {
+				System.out.println("Han terminado "+tasaRenovacion+" procesos y Entra nuevo proceso.");
 				this.dispatcher.generarProceso(this);
 				this.eliminados=0;
 			}

@@ -1,5 +1,12 @@
 package reto3b.listadoblecircular;
 
+
+/**
+ * Interface para lista doblemente enlazada circular
+ * @author Jose Javier Bailon Ortiz
+ * 
+ * @param <T> Clase de elemento a almacenar
+ */
 public interface ListaDobleCiruclarInterface<T> {
 	/**
 	 * Agregar al final
@@ -36,7 +43,7 @@ public interface ListaDobleCiruclarInterface<T> {
 	
 	/**
 	 * Devuelve si la lista contiene el elemento
-	 * @param elemento
+	 * @param elemento Elemento a comprobar
 	 * @return indice si lo contiene, -1 si no lo contiene. Usa la funcion Equals
 	 */
 	public int contains (T elemento);
@@ -105,7 +112,7 @@ public interface ListaDobleCiruclarInterface<T> {
 	
 	/**
 	 * Devuelve la cantidad de elementos
-	 * @return
+	 * @return Cantidad de elementos
 	 */
 	public int size();
 	

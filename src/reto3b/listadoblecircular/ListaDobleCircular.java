@@ -32,6 +32,14 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 		 */
 		Nodo<T> actual;
 
+		/**
+		 * Constructor
+		 */
+		public Cabecera () {
+			this.first=null;
+			this.tail=null;
+			this.actual=null;
+		}
 		
 		//GETTERS Y SETTERS
 		void setFirst(Nodo<T> nodo) {
@@ -86,7 +94,7 @@ public class ListaDobleCircular<T> implements ListaDobleCiruclarInterface<T> {
 	 * Agrega un elemento en una posicion concreta desplazando a la derecha el elemento que hubiese en la posicion
 	 */
 	@Override
-	public void addIn(int posicionDeInsercion, T elemento) {
+	public void addIn(int posicionDeInsercion, T elemento) throws IndexOutOfBoundsException{
 		//Comprobar que la posicion de insercion es valida
 		if (posicionDeInsercion > this.size() || posicionDeInsercion < 0)
 			throw new IndexOutOfBoundsException("Indice no válido");

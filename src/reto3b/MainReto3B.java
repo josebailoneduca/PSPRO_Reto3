@@ -14,21 +14,43 @@ package reto3b;
  * 
  * Al quedarse la lista vacia termina el programa
 
- * 
+ * @author Jose Javier Bailon Ortiz
  */
 public class MainReto3B {
 
 	public static void main(String[] args) {
+		
+		
+		//PARAMETROS DE CONFIGURACION
+		//consumos realizados por la CPU
+		int minConsumo=50;
+		int maxConsumo=200;
+		
+		//Vida de los procesos
+		int minVida=1_000;
+		int maxVida=10_000;
+		
+		//Numero de procesos iniciales
+		int nProcesosIniciales=1000;
+		
+		//Tasa de renovacion de procesos. Cuando hayan terminado estos procesos Scheduler pedira un nuevo proceso.
+		int tasaRenovacion=100;
+		
+		
+		
+		
 		//CPU  a usar
-		CPU cpu = new CPU();
+		CPU cpu = new CPU(minConsumo,maxConsumo);
 		//Dispatcher
-		Dispatcher dispatcher = new Dispatcher();
+		Dispatcher dispatcher = new Dispatcher(minVida,maxVida);
 		//Scheduler
-		Scheduler scheduler = new Scheduler(dispatcher, cpu);
+		Scheduler scheduler = new Scheduler(dispatcher, cpu, tasaRenovacion);
+		
 		//generacion de los procesos iniciales
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < nProcesosIniciales; i++) {
 			dispatcher.generarProceso(scheduler);
 		}
+		
 		//Iniciar el funcionamiento del scheduler
 		scheduler.iniciar();
 		

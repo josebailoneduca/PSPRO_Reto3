@@ -5,6 +5,8 @@ import java.util.Objects;
 
 /**
  * Simula in proceso. Contiene un identificador y la cantidad de ciclos restantes para terminarse
+ * 
+ * @author Jose Javier Bailon Ortiz
  */
 public class Proceso {
 	
@@ -30,17 +32,29 @@ public class Proceso {
 	}
 	
 	
+	/**
+	 * Devuelve los ciclos de vida restantes
+	 * @return Los ciclos de vida
+	 */
 	public int getCiclos() {
 		return ciclos;
 	}
 	
-	
+	/**
+	 * Define los ciclos de vida restantes
+	 * 
+	 * @param ciclos Los ciclos de vida
+	 */
 	public void setCiclos(int ciclos) {
 		this.ciclos = ciclos;
 		if (this.ciclos<0) 
 			this.ciclos=0;
 	}
 	
+	/**
+	 * Devuelve la id del proceso
+	 * @return La id
+	 */
 	public int getId() {
 		return id;
 	}

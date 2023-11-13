@@ -4,6 +4,8 @@ import java.util.Random;
 
 /**
  * Genera procesos que manda a un scheduler
+ * 
+ * @author Jose Javier Bailon Ortiz
  */
 public class Dispatcher {
 	/**
@@ -27,7 +29,20 @@ public class Dispatcher {
 	int max=10000;
  
 	
-	
+	/**
+	 * Constructor
+	 * @param min Minimo de tiempo de vida en ciclos de CPU que tendran los procesos creados
+	 * @param max Maximo de tiempo de vida en ciclos de CPU que tendran los procesos creados
+	 */
+	public Dispatcher(int min, int max) {
+		id=0;
+		r=new Random();
+		this.min = min;
+		this.max = max;
+	}
+
+
+
 	/**
 	 * Genera un proceso y lo manda al scheduler suministrado
 	 * 
